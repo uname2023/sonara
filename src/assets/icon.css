@@ -1,0 +1,155 @@
+@font-face {
+  font-family: "iconfont";
+  /* Project id 3952580 */
+  src: url('//at.alicdn.com/t/c/font_3952580_5ldywpm9rp.woff2?t=1766392582427') format('woff2'),
+    url('//at.alicdn.com/t/c/font_3952580_5ldywpm9rp.woff?t=1766392582427') format('woff'),
+    url('//at.alicdn.com/t/c/font_3952580_5ldywpm9rp.ttf?t=1766392582427') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-xiangxiajiantou:before {
+  content: "\e65e";
+}
+
+.icon-changpian:before {
+  content: "\e607";
+}
+
+.icon-xiajiantou:before {
+  content: "\e603";
+}
+
+.icon-bofang:before {
+  content: "\e618";
+}
+
+.icon-sousuo:before {
+  content: "\e86e";
+}
+
+.icon-jiantou-zuo:before {
+  content: "\e660";
+}
+
+.icon-operate:before {
+  content: "\e759";
+}
+
+.icon-taiyang:before {
+  content: "\e635";
+}
+
+.icon-moon:before {
+  content: "\e68d";
+}
+
+.icon-more-br:before {
+  content: "\e649";
+}
+
+.icon-review:before {
+  content: "\e62a";
+}
+
+.icon-xiazai-wenjianxiazai-05:before {
+  content: "\e602";
+}
+
+.icon-shipin:before {
+  content: "\e61e";
+}
+
+.icon-yinle:before {
+  content: "\e90e";
+}
+
+.icon-xingqiu:before {
+  content: "\e65c";
+}
+
+.icon-shouqi:before {
+  content: "\e63c";
+}
+
+.icon-zhankai:before {
+  content: "\ea83";
+}
+
+.icon-xiai:before {
+  content: "\e601";
+}
+
+.icon-MV:before {
+  content: "\e62c";
+}
+
+.icon-bofangqi-bofang:before {
+  content: "\e6a4";
+}
+
+.icon-erji:before {
+  content: "\e616";
+}
+
+.icon-jiantouyou:before {
+  content: "\e62d";
+}
+
+.icon-shoucang:before {
+  content: "\e627";
+}
+
+.icon-gengduo:before {
+  content: "\e719";
+}
+
+.icon-24gl-play:before {
+  content: "\ea6d";
+}
+
+.icon-yangshengqi:before {
+  content: "\e600";
+}
+
+.icon-danquxunhuan:before {
+  content: "\e66d";
+}
+
+.icon-shangyishou:before {
+  content: "\e76c";
+}
+
+.icon-xiayishou:before {
+  content: "\e76d";
+}
+
+.icon-24gl-shuffle:before {
+  content: "\ea75";
+}
+
+.icon-shunxubofang:before {
+  content: "\e871";
+}
+
+.icon-zanting1:before {
+  content: "\e662";
+}
+
+.icon-bofang1:before {
+  content: "\ea82";
+}
+
+.icon-gedan:before {
+  content: "\e6c1";
+}
+
+.icon-yinliang:before {
+  content: "\e6b2";
+}

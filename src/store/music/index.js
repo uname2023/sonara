@@ -18,13 +18,14 @@ const option = {
     // 传入歌曲的id即可
     addSongsUrl(id, index) {
       requests({
-        url: `/song/url/v1?id=${id}&level=standard`,
+        url: `/song/${id}/url`,
       }).then(
         (res) => {
-          if (res.code == 200) {
-            this.addSongUrl(res.data[0].url)
+          if (res.status == 200) {
+            this.addSongUrl(res.data.url)
             this.songsId(index)
             this.musicState = true
+            console.log(res);
           } else {
             console.log(res.code + ":" + res.message);
             this.musicState = false
@@ -45,7 +46,6 @@ const option = {
     },
     nextOne() {
       if (this.imgsList.length) {
-        console.log(this.imgsList[this.currentSongId].musicId);
         this.nextMusic()
         this.addSongsUrl(this.imgsList[this.currentSongId].musicId, this.currentSongId)
       } else {

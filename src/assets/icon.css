@@ -83,6 +83,7 @@
 }
 
 .icon-xiai:before {
+  color: red;
   content: "\e601";
 }
 
@@ -91,6 +92,7 @@
 }
 
 .icon-bofangqi-bofang:before {
+  font-size: 45px;
   content: "\e6a4";
 }
 

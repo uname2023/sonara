@@ -14,9 +14,9 @@
                     <ul v-if="state">
                         <li v-for="(item, index) in hotSearchVal.currentList" :key="index">
                             <div v-if="!searchVal" class="hot" @click="hotSearch(item)">
-                                <div>{{ index + 1 }}.&nbsp;&nbsp;{{ item.searchWord
+                                <div>{{ index + 1 }}.&nbsp;&nbsp;{{ item.name
                                 }}</div>
-                                <div style="color: rgb(52 211 153);">{{ Math.round(parseInt(item.score) /
+                                <div style="color: rgb(52 211 153);">{{ Math.round(parseInt(item.playCount) /
                                     1000) / 10 }}万</div>
                             </div>
                             <div v-if="searchVal" class="hot" @click="searchUrl(item)">
@@ -33,9 +33,9 @@
         </div>
         <div class="user" style="cursor: pointer;">
             <el-avatar :size="30">
-                <img :src="loginImg" />
+                <img :src="userData.avatarUrl" />
             </el-avatar>
-            <span @click="login">点击登录</span>
+            <span @click="login" v-show="!isLogin">点击登录</span>
             <i :class="themeicon" class="iconfont" @click="changeTheme"></i>
             <i class="icon-operate iconfont" @click="operate"></i>
             <div class="operate"
@@ -44,9 +44,21 @@
                     退出登录
                 </p>
             </div>
-            <el-dialog title="扫码登录" v-model="dialogVisible" width="300px" :before-close="handleClose">
+            <el-dialog v-model="dialogVisible" width="300px" :before-close="handleClose">
                 <div class="dislogBox">
-                    <div class="qrcode" ref="qrCodeUrl"></div>
+                    <el-form :model="form" label-width="auto" label-position="top" style="max-width: 600px">
+                        <el-form-item label="用户名">
+                            <el-input placeholder="Please input username" v-model="form.username" />
+                        </el-form-item>
+                        <el-form-item label="密码">
+                            <el-input v-model="form.password" type="password" placeholder="Please input password"
+                                show-password />
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="onSubmit">登录</el-button>
+                            <el-button @click="dialogVisible = !dialogVisible">取消</el-button>
+                        </el-form-item>
+                    </el-form>
                 </div>
             </el-dialog>
         </div>
@@ -57,10 +69,12 @@
 import requests from '@/api/request'
 import { useTheme } from '@/store/theme';
 import { useMusic } from "@/store/music"
-import { computed, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { storeToRefs } from 'pinia';
+import { useData } from 'element-plus/es/components/table-v2/src/composables/use-data.mjs';
+import { useLogin } from "@/store/login/login"
 let route = useRoute()
 let router = useRouter()
 
@@ -68,7 +82,6 @@ let theme = useTheme()
 
 let searchWord = ref("")
 let themeicon = ref("icon-taiyang")//icon-taiyang,icon-moon
-let loginImg = ref("https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png")
 let rankList = ref([])
 let dialogVisible = ref(false)
 let operateVis = ref(false)
@@ -94,9 +107,7 @@ function changeTheme() {
 function login() {
     dialogVisible.value = true
 }
-function logout() {
-    console.log("退出登录");
-}
+
 function handleClose(done) {
     done()
 }
@@ -120,7 +131,8 @@ function searchUrl(item) {
     let tempObj = {}
     tempObj.musicId = item.id
     tempObj.musicName = item.name
-    tempObj.musicPic = item.artists[0].img1v1Url
+    // tempObj.musicPic = item.artists[0].img1v1Url
+    tempObj.musicPic = item.coverImgUrl
     tempObj.musicAuthor = item.artists[0].name
     tempArr.push(tempObj)
     tempObj = {}
@@ -134,23 +146,6 @@ function searchUrl(item) {
             center: true
         });
     }
-
-    // this.$store.dispatch("addSongsList", {
-    //     list: [item],
-    //     id: 0
-    // })
-    // this.$store.commit("imgsListAdd", item)
-    // this.$store.commit("songPlay")
-    // if (!this.$store.state.music.musicState) {
-    //     if (!this.musicState) {
-    //         this.$message({
-    //             showClose: true,
-    //             message: '460 网路拥挤 请稍后重试',
-    //             type: 'error',
-    //             center: true
-    //         });
-    //     }
-    // }
 }
 requests({ url: "/search/hot/detail" }).then(res => {
     rankList = res.data
@@ -171,8 +166,8 @@ let searchVal = computed({
             state.value = false
             searchWord.value = val
             timer = setTimeout(() => {
-                requests({ url: `/search?keywords=${val}` }).then(res => {
-                    hotSearchVal.currentList = res.result.songs
+                requests({ url: `/search/song?keyword=${val}` }).then(res => {
+                    hotSearchVal.currentList = res.data
                     hotSearchVal.title = "单曲"
                     state.value = true
                 }, err => {
@@ -186,6 +181,79 @@ let searchVal = computed({
             searchWord.value = ""
         }
     }
+})
+
+
+// 登录功能
+let form = reactive({
+    username: "admin",
+    password: "123456"
+})
+let userData = reactive({
+    avatarUrl: "https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png",
+    nickname: "",
+    role: "",
+    userId: 0,
+    username: ""
+})
+let Login = useLogin()
+let { isLogin } = storeToRefs(Login)
+
+function onSubmit() {
+    requests.post("/auth/login", form).then(
+        res => {
+            userData.avatarUrl = res.data.avatarUrl
+            userData.nickname = res.data.nickname
+            userData.role = res.data.role
+            userData.userId = res.data.userId
+            userData.username = res.data.username
+            const { token } = res.data
+            // 存储 token
+            localStorage.setItem("sonara_token", token)
+            isLogin.value = true
+            ElMessage({
+                showClose: true,
+                message: "登录成功",
+                type: 'success',
+                center: true,
+            });
+            dialogVisible.value = !dialogVisible.value
+        }, err => {
+            console.log(form);
+            console.log(err);
+            ElMessage({
+                showClose: true,
+                message: err,
+                type: 'error',
+                center: true,
+            });
+        })
+}
+function logout() {
+    localStorage.removeItem("sonara_token")
+    userData.avatarUrl = "https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
+    userData.nickname = ""
+    userData.role = ""
+    userData.userId = 0
+    userData.username = ""
+    isLogin.value = false
+    operateVis.value = false
+
+}
+
+
+onMounted(() => {
+    const token = localStorage.getItem('sonara_token')
+    if (token) {
+        requests.get("/auth/profile").then(res => {
+            userData.avatarUrl = res.data.avatarUrl
+            userData.nickname = res.data.nickname
+            userData.userId = res.data.id
+            userData.username = res.data.username
+            isLogin.value = true
+        })
+    }
+
 })
 </script>
 
@@ -216,10 +284,10 @@ let searchVal = computed({
     }
 
     .user {
-        width: 142px;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 10px;
 
         .operate {
             width: 80px;
@@ -244,11 +312,14 @@ let searchVal = computed({
         }
 
         .dislogBox {
-            width: 100%;
-            height: 100%;
             display: flex;
+            padding: 10px;
             justify-content: center;
             align-items: center;
+
+            :deep(.el-form-item__content) {
+                justify-content: center;
+            }
         }
 
         .el-moon,

@@ -11,13 +11,6 @@
                     </div>
                     <dujia></dujia>
                 </div>
-                <div class="radioStation">
-                    <div class="text2">
-                        <p>推荐电台</p>
-                        <span class="iconfont icon-jiantouyou"></span>
-                    </div>
-                </div>
-                <radioStationVue></radioStationVue>
                 <div class="recomMV">
                     <MV></MV>
                 </div>

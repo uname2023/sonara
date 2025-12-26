@@ -30,6 +30,7 @@ let theme = useTheme()
 <style lang="less">
 .el-container {
     height: 100%;
+    transition: all .2s linear;
 
     .el-main {
         overflow-y: auto;

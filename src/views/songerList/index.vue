@@ -46,7 +46,7 @@
               <li class="tBody" v-for="(item, index) in hotSongList" :key="index"
                 @click="musicPlay(hotSongList, item, index)">
                 <div style="flex: 2;"><span class="iconfont icon-shoucang"></span><span>{{ item.name
-                    }}</span>
+                }}</span>
                   <span v-if="item.mv" @click.stop="toMV(item)" class="iconfont icon-MV"
                     style="color:orange;margin-left: 5px;"></span>
                 </div>
@@ -333,16 +333,16 @@ onBeforeMount(() => {
       color: rgb(5, 150, 105);
     }
 
-    ::v-deep .el-tabs {
+    :deep(.el-tabs) {
       height: 100%;
     }
 
-    ::v-deep .el-tabs__content {
+    :deep(.el-tabs__content) {
       width: 100%;
       height: 100%;
     }
 
-    ::v-deep .el-tab-pane {
+    :deep(.el-tab-pane) {
       width: 100%;
       height: 100%;
     }

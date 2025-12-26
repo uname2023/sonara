@@ -39,22 +39,24 @@
             <el-tabs v-model="activeName">
                 <el-tab-pane :label="'歌曲' + songsNum" name="first">
                     <div class="songs ">
-                        <ul class="list" v-infinite-scroll="load" infinite-scroll-disabled="loading">
-                            <li class="tHead">
-                                <div style="flex:2 ;">歌曲</div>
-                                <div style="flex:1 ;">歌手</div>
-                                <div style="flex:1 ;">专辑</div>
-                                <div style="flex:1 ;">时长</div>
-                            </li>
-                            <li class="tBody" v-for="(item, index) in musicInforList" :key="index"
-                                @click="playMusic(item, index)">
-                                <div style="flex: 2;"><span class="iconfont icon-shoucang"></span><span>{{ item.name
-                                        }}</span></div>
-                                <div style="flex: 1;">{{ item.author }}</div>
-                                <div style="flex: 1;">{{ item.album }}</div>
-                                <div style="flex: 1 ;">{{ item.duration }}</div>
-                            </li>
-                        </ul>
+                        <el-scrollbar height="300" @end-reached="load">
+                            <ul class="list">
+                                <li class="tHead">
+                                    <div style="flex:2 ;">歌曲</div>
+                                    <div style="flex:1 ;">歌手</div>
+                                    <div style="flex:1 ;">专辑</div>
+                                    <div style="flex:1 ;">时长</div>
+                                </li>
+                                <li class="tBody" v-for="(item, index) in musicInforList" :key="index"
+                                    @click="playMusic(item, index)">
+                                    <div style="flex: 2;"><span class="iconfont icon-shoucang"></span><span>{{ item.name
+                                    }}</span></div>
+                                    <div style="flex: 1;">{{ item.author }}</div>
+                                    <div style="flex: 1;">{{ item.album }}</div>
+                                    <div style="flex: 1 ;">{{ item.duration }}</div>
+                                </li>
+                            </ul>
+                        </el-scrollbar>
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="评论" name="second">评论</el-tab-pane>
@@ -76,7 +78,7 @@ let id = route.query.id
 let playLists = ref([])//歌单列表
 let playListObj = reactive({
     imgUrl: "/imgs/1003.png",
-    title: "仿QQ音乐",
+    title: "sonara",
     author: "周小建",
     authorImg: "/imgs/1003.png",
     tags: ["怀旧", "流行"],
@@ -89,11 +91,10 @@ let songsNum = ref(0)
 let musicInforList = ref([])//遍历的歌曲数组
 let musicUrlList = ref([])
 
-let { musicState } = storeToRefs(music)
-
 function load() {
     loading.value = true
-    requests({ url: `/playlist/track/all?id=${id}&limit=10&offset=${offset}` }).then(res => {
+    requests.get(`/playlist/${id}`).then(res => {
+        console.log(res);
         playLists.value = playLists.value.concat(res.songs)
         res.songs.forEach(item => {
             let temp = {}
@@ -115,6 +116,8 @@ function load() {
         console.log(err);
     })
 }
+
+load()
 
 let music = useMusic()
 function playMusic(item, index) {
@@ -232,16 +235,16 @@ requests({ url: `/playlist/detail?id=${id}` }).then(res => {
     .songBox {
         flex: 1;
 
-        ::v-deep .el-tabs {
+        :deep(.el-tabs) {
             height: 100%;
         }
 
-        ::v-deep .el-tabs__content {
+        :deep(.el-tabs__content) {
             width: 100%;
             height: 100%;
         }
 
-        ::v-deep .el-tab-pane {
+        :deep(.el-tab-pane) {
             width: 100%;
             height: 100%;
         }

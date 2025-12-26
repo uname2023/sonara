@@ -12,7 +12,7 @@
                             class="iconfont icon-bofangqi-bofang">
                         </span>
                     </div>
-                    <img :src="item.picUrl" style="width: 100%;min-width: 160px;border-radius: 8px;">
+                    <img :src="item.coverUrl" style="width: 100%;min-width: 160px;border-radius: 8px;">
                     <div class="playCount">
                         <div class="iconfont icon-erji" style="margin-right: 5px;"></div>
                         <div>{{ Math.round(parseInt(item.playCount) / 1000) / 10 }}万</div>
@@ -20,7 +20,6 @@
                 </div>
                 <div style="margin-top: 8px;">
                     <p>{{ item.name }}</p>
-                    <p style="color: rgb(148, 163, 184);">{{ item.artistName }}</p>
                 </div>
             </div>
         </div>
@@ -42,11 +41,12 @@ function toDetails(item) {
     })
 }
 
-requests({ url: "/personalized/mv" }).then(res => {
-    mvList.value = res.result
+requests({ url: "/mv" }).then(res => {
+    mvList.value = res.data
 }, err => {
     console.log(err);
 })
+
 </script>
 
 <style lang="less" scoped>

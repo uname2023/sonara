@@ -100,8 +100,8 @@ function leave(e) {
 
     .brand {
         position: absolute;
-        top: 20px;
-        left: 20px;
+        top: 30px;
+        left: 30px;
         width: 120px;
     }
 

@@ -137,6 +137,7 @@ requests({ url: "/personalized/newsong" }).then(res => {
             grid-template-rows: repeat(2, 1fr);
             grid-column-gap: 15px;
             grid-row-gap: 15px;
+            
         }
 
         .imgBox {

@@ -41,7 +41,7 @@
                             <li class="tBody" v-for="(item, index) in musicInforList" :key="index"
                                 @click="playMusic(item, index)">
                                 <div style="flex: 2;"><span class="iconfont icon-shoucang"></span><span>{{ item.name
-                                }}</span></div>
+                                        }}</span></div>
                                 <div style="flex: 1;">{{ item.author }}</div>
                                 <div style="flex: 1 ;">{{ item.duration }}</div>
                             </li>
@@ -71,7 +71,7 @@ let id = route.query.id
 let albumDetail = reactive({})//歌单列表
 let playListObj = reactive({
     imgUrl: "/imgs/1003.png",
-    title: "仿QQ音乐",
+    title: "sonara",
     author: "周小建",
     authorImg: "/imgs/1003.png"
 })
@@ -202,16 +202,16 @@ onBeforeMount(() => {
             line-height: 28px;
         }
 
-        ::v-deep .el-tabs {
+        :deep(.el-tabs) {
             height: 100%;
         }
 
-        ::v-deep .el-tabs__content {
+        :deep(.el-tabs__content) {
             width: 100%;
             height: 100%;
         }
 
-        ::v-deep .el-tab-pane {
+        :deep(.el-tab-pane) {
             width: 100%;
             height: 100%;
         }
